@@ -1,11 +1,14 @@
 import { Button, Paper, TextField, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 
 const GamesFinder = () => {
-  const {games, setGames} = useState(null);
+  
   const {error, setError} = useState(null);
+  const {isLoading, setIsLoading} = useState(false);
 
   const inputRef = useRef(null)
+  const navigate = useNavigate();
 
   useEffect(() => {
     if(inputRef.current) {
@@ -15,18 +18,36 @@ const GamesFinder = () => {
 
   const fetchGames = async () => {
     const game = inputRef.current.value;
+
+    if (!game.trim()) {
+      setError('Por favor ingrese un nombre de juego');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
     try {
+      const apiUrl = import.meta.env.VITE_FREETOGAMES_API_URL;
+      if (!apiUrl) {
+        throw new Error('La URL de la API no está configurada');
+      }
+
       const response = await fetch(`${import.meta.env.VITE_FREETOGAMES_API_URL}${game}`)
       if(!response.ok) {
-        throw new Error('Usuario no encontrado');
+        throw new Error(
+          response.status === 404 
+          ? 'Juego no encontrado' 
+          : 'Error al buscar el juego'
+        );
       }
       const data = await response.json();
-      setUser(data);
-      setError(null);
+      navigate(`/juegos/${data.title}`, { state: { game: data } });
 
     } catch (error) {
-        setError(error.message);
-        setUser(null); 
+        setError(error.message); 
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -53,9 +74,10 @@ const GamesFinder = () => {
         variant='contained'
         color='primary'
         onClick={fetchGames}
-        sx={{marginTop: 2}}
+        disabled={isLoading}
+        sx={{marginTop: 2}}  
       >
-        Buscar
+       {isLoading? 'Buscando...' : 'Buscar'} 
         </Button>    
     </Paper>
   )

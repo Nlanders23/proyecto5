@@ -49,3 +49,50 @@
   color: #ffffff; 
 }
 
+.cuerpo {
+  background-color: #dce3f1; 
+  color: #101111; 
+  padding-top: 3rem; 
+  padding-bottom: 3rem; 
+  margin-top: auto;  
+}
+
+.enlaces {
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 2rem; 
+}
+
+@media (min-width: 768px) {
+.enlaces {
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center; 
+}}
+
+.subcajas {
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 2rem; 
+}
+
+@media (min-width: 768px) {
+.subcajas {
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center; 
+}}
+
+.detalles {
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 2rem; 
+  height: 500px;
+}
+
+@media (min-width: 768px) {
+  .detalles {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-items: center; 
+  }}

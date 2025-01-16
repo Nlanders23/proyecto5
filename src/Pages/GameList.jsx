@@ -35,7 +35,7 @@ const GameList = () => {
   }
   
   return (
-    <Grid2 container spacing={2} sx={{padding:'20px'}}>
+    <Grid2 container spacing={2} sx={{padding:'20px', backgroundColor:' #dce3f1', }}>
       {games!= null && games.map(game =>(
            <Grid2 item xs={12} sm={6} md={4}  key={game.id}>
               <Card>
