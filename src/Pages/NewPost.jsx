@@ -2,7 +2,7 @@ import { Card, CardActionArea, CardContent, CardMedia, CircularProgress, Grid2, 
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
-const API_URL = 'https://corsproxy.io/?url=https://www.freetogame.com/api/games';
+const API_URL = import.meta.env.VITE_FREETOGAMES_API_URL;
 
 const NewPost = () => {
   const [games, setGames] = useState([]);

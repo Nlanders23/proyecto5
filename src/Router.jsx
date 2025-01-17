@@ -4,6 +4,7 @@ import DetailGames from './Pages/DetailGames'
 import Layout from "./Components/Layout";
 import Home from './Pages/Home'
 import NewPost from "./Pages/NewPost";
+import NotFound from './Pages/NotFound'
 
 const Router = createBrowserRouter ([
     { path: '/',
@@ -14,7 +15,8 @@ const Router = createBrowserRouter ([
             {path: '/juegos/:nombre', element: <DetailGames />},
             {path: '/juegos/ultimos-lanzamientos', element: <NewPost />} 
         ]
-    }
+    },
+    {path:'*', element: <NotFound />}
 
 ])
 

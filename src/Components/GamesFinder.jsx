@@ -1,86 +1,104 @@
 import { Button, Paper, TextField, Typography } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const GamesFinder = () => {
-  
-  const {error, setError} = useState(null);
-  const {isLoading, setIsLoading} = useState(false);
-
-  const inputRef = useRef(null)
+  const [error, setError]   = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
   const fetchGames = async () => {
-    const game = inputRef.current.value;
+    const gameName = inputRef.current.value;
 
-    if (!game.trim()) {
+    if (!gameName.trim()) {
       setError('Por favor ingrese un nombre de juego');
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
+    
 
     try {
+      setIsLoading(true);
+      setError(null);
       const apiUrl = import.meta.env.VITE_FREETOGAMES_API_URL;
       if (!apiUrl) {
         throw new Error('La URL de la API no está configurada');
       }
 
-      const response = await fetch(`${import.meta.env.VITE_FREETOGAMES_API_URL}${game}`)
-      if(!response.ok) {
+      const response = await fetch(`${apiUrl}`);
+      if (!response.ok) {
         throw new Error(
-          response.status === 404 
-          ? 'Juego no encontrado' 
-          : 'Error al buscar el juego'
+          response.status === 404
+            ? 'Juego no encontrado'
+            : 'Error al buscar el juego'
         );
       }
+      console.log(response)
       const data = await response.json();
-      navigate(`/juegos/${data.title}`, { state: { game: data } });
+      console.log(data)
+      // Encuentra el juego que coincida con el nombre ingresado
+      const games = Array.isArray(data) ? data: [];
+      const foundGame = games.filter(game => game.title.toLowerCase() === gameName.toLowerCase());
+      console.log(foundGame)
+      if (foundGame) {
+        navigate(`/juegos/${foundGame[0].id}`, { state: { game: foundGame[0] } }); 
+       
+      } 
 
     } catch (error) {
-        setError(error.message); 
+      console.log(error)
+      setError('Juego no encontrado');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      fetchGames();
+    }
+  };
 
   return (
     <Paper
       elevation={3}
       sx={{
-        maxWith: 400,
+        maxWidth: 400,
         margin: "auto",
         padding: 2,
         textAlign: "center",
-        marginTop: 2  
+        marginTop: 2,
       }}
     >
-      <Typography>Buscar juego</Typography>
-      <TextField 
+      <Typography variant='h6' gutterBottom>Buscar juego</Typography>
+      <TextField
         inputRef={inputRef}
         fullWidth
         variant='outlined'
         placeholder='Ingrese el nombre del juego'
         margin='normal'
-      />  
+        onKeyDown={handleKeyDown}
+        error={!!error} 
+        helperText={error}
+      />
       <Button
         variant='contained'
         color='primary'
         onClick={fetchGames}
         disabled={isLoading}
-        sx={{marginTop: 2}}  
+        sx={{ marginTop: 2 }}
       >
-       {isLoading? 'Buscando...' : 'Buscar'} 
-        </Button>    
+        {isLoading ? 'Buscando...' : 'Buscar'}
+      </Button>
     </Paper>
-  )
-}
+  );
+};
 
-export default GamesFinder
+export default GamesFinder;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import GamesFinder from "../Components/GamesFinder";
 import { ErrorBoundary } from "../Components/ErrorBoundary";
-import { Container } from "postcss";
+import RandomMesaggeBar from '../Components/RandomMesaggeBar'
 
 const Home = () => {
     return(
@@ -38,6 +38,7 @@ const Home = () => {
                  </div>
              </div>
           </div>
+          <RandomMesaggeBar />
         </div> 
         </>
        
