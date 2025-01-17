@@ -18,3 +18,4 @@ Dentro del Home tambien encontrarás un enlace para acceder a los últimos juego
 
 Tambien al ingresar al home nuestro amigo Chuck Norris te sorprenderá con una frase Random.
 
+Enlace directo a la página en: https://howlinggame23.netlify.app/
